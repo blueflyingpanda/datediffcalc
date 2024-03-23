@@ -1,0 +1,57 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
+}
+
+.container {
+  text-align: center;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 20px rgba(0, 0, 0, 0.05);
+  width: auto;
+  max-width: 400px;
+}
+
+input[type="text"] {
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  width: calc(100% - 24px); /* input padding and border */
+  box-sizing: border-box; /* Include padding and border in element's width */
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#outputText {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #333;
+}
