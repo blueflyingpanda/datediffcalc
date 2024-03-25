@@ -1,5 +1,4 @@
-document.getElementById('dateForm').addEventListener('submit', function(e) {
-  e.preventDefault(); // Prevent form submission
+function calculate() {
   const dateInput = document.getElementById('dateInput');
   // Remove spaces from the input
   const userInput = dateInput.value.replace(/\s+/g, '');
@@ -30,16 +29,23 @@ document.getElementById('dateForm').addEventListener('submit', function(e) {
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0); // Reset time to start of day
 
+  // Check if the "Count only working days" toggle is checked
+  const countWorkingDays = document.getElementById('workingDaysToggle').checked;
+
   let diffDays = 0;
-    let tempDate = new Date(inputDate);
-    while (tempDate < currentDate) {
-        const dayOfWeek = tempDate.getDay();
-        if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 0 is Sunday, 6 is Saturday
-            diffDays++;
-        }
-        tempDate.setDate(tempDate.getDate() + 1);
-    }
+  let tempDate = new Date(inputDate);
+  while (tempDate < currentDate) {
+      if (countWorkingDays) {
+          const dayOfWeek = tempDate.getDay();
+          if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 0 is Sunday, 6 is Saturday
+              diffDays++;
+          }
+      } else {
+          diffDays++; // Count all days if the toggle is not checked
+      }
+      tempDate.setDate(tempDate.getDate() + 1);
+  }
 
   document.getElementById('exclusiveOutput').textContent = "Days difference exclusive: " + diffDays;
   document.getElementById('inclusiveOutput').textContent= "Days difference inclusive: " + (diffDays + 1)
-});
+};

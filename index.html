@@ -11,9 +11,16 @@
 
 <body>
   <div class="container">
-    <form id="dateForm">
-      <input type="text" id="dateInput" placeholder="Enter the date as dd.mm.yyyy" required>
-      <button type="submit">Calculate</button>
+    <form id="dateForm" action="javascript:void(0);"> <!-- prevents default submitting behaviour -->
+      <input type="text" id="dateInput" placeholder="dd.mm.yyyy" required>
+      <div class="toggle-container">
+        <span class="toggle-label">Only work days</span>
+        <label class="switch">
+          <input type="checkbox" id="workingDaysToggle" checked onchange="calculate()">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <button onclick="calculate()">Calculate</button>
     </form>
     <br>
     <div id="exclusiveOutput">Days difference exclusive: </div>
