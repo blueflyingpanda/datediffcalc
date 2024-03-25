@@ -30,8 +30,15 @@ document.getElementById('dateForm').addEventListener('submit', function(e) {
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0); // Reset time to start of day
 
-  const diffTime = Math.abs(currentDate - inputDate);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  let diffDays = 0;
+    let tempDate = new Date(inputDate);
+    while (tempDate < currentDate) {
+        const dayOfWeek = tempDate.getDay();
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 0 is Sunday, 6 is Saturday
+            diffDays++;
+        }
+        tempDate.setDate(tempDate.getDate() + 1);
+    }
 
   document.getElementById('exclusiveOutput').textContent = "Days difference exclusive: " + diffDays;
   document.getElementById('inclusiveOutput').textContent= "Days difference inclusive: " + (diffDays + 1)
