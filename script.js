@@ -1,32 +1,27 @@
 document.getElementById('dateInput').addEventListener('input', function(e) {
-  let input = e.target.value;
-  const originalLength = input.length;
-  const cursorPosition = e.target.selectionStart;
+  // Get the current value of the input, removing any non-digit characters
+  let value = e.target.value.replace(/[^\d]/g, '');
 
-  // Remove any characters that are not digits or dots
-  input = input.replace(/[^0-9.]/g, '');
+  // Initialize an array to hold the parts of the date
+  let parts = [];
 
-  // Automatically insert dots after dd and mm components if not present
-  if (input.length > 2 && input[2] !== '.') {
-      input = input.slice(0, 2) + '.' + input.slice(2);
-  }
-  if (input.length > 5 && input[5] !== '.') {
-      input = input.slice(0, 5) + '.' + input.slice(5);
-  }
-
-  // Ensure the final string does not exceed the length for dd.mm.yyyy
-  input = input.slice(0, 10);
-
-  // Calculate new cursor position
-  let newPosition = cursorPosition;
-  if (originalLength < input.length && (cursorPosition === 3 || cursorPosition === 6)) {
-      newPosition = cursorPosition + 1; // Move cursor right to account for the newly inserted dot
+  // Extract and push the day and month parts based on the input length
+  if (value.length >= 2) {
+    parts.push(value.substring(0, 2)); // Day
+    if (value.length > 2) {
+      parts.push(value.substring(2, 4)); // Month
+    }
+    if (value.length > 4) {
+      parts.push(value.substring(4, 8)); // Year
+    }
+  } else {
+    parts.push(value);
   }
 
-  // Update the input field
-  e.target.value = input;
-  e.target.setSelectionRange(newPosition, newPosition);
+  // Join the parts with dots and update the input value
+  e.target.value = parts.join('.');
 });
+
 
 
 function calculate() {
@@ -65,7 +60,7 @@ function calculate() {
 
   let diffDays = 0;
   let tempDate = new Date(inputDate);
-  while (tempDate < currentDate) {
+  while (tempDate.toDateString() != currentDate.toDateString()) {
       if (countWorkingDays) {
           const dayOfWeek = tempDate.getDay();
           if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 0 is Sunday, 6 is Saturday
@@ -74,7 +69,7 @@ function calculate() {
       } else {
           diffDays++; // Count all days if the toggle is not checked
       }
-      tempDate.setDate(tempDate.getDate() + 1);
+      tempDate.setDate(tempDate.getDate() + (tempDate < currentDate ? 1 : -1));
   }
 
   document.getElementById('exclusiveOutput').textContent = "Days difference exclusive: " + diffDays;
