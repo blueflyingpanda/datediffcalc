@@ -1,3 +1,34 @@
+document.getElementById('dateInput').addEventListener('input', function(e) {
+  let input = e.target.value;
+  const originalLength = input.length;
+  const cursorPosition = e.target.selectionStart;
+
+  // Remove any characters that are not digits or dots
+  input = input.replace(/[^0-9.]/g, '');
+
+  // Automatically insert dots after dd and mm components if not present
+  if (input.length > 2 && input[2] !== '.') {
+      input = input.slice(0, 2) + '.' + input.slice(2);
+  }
+  if (input.length > 5 && input[5] !== '.') {
+      input = input.slice(0, 5) + '.' + input.slice(5);
+  }
+
+  // Ensure the final string does not exceed the length for dd.mm.yyyy
+  input = input.slice(0, 10);
+
+  // Calculate new cursor position
+  let newPosition = cursorPosition;
+  if (originalLength < input.length && (cursorPosition === 3 || cursorPosition === 6)) {
+      newPosition = cursorPosition + 1; // Move cursor right to account for the newly inserted dot
+  }
+
+  // Update the input field
+  e.target.value = input;
+  e.target.setSelectionRange(newPosition, newPosition);
+});
+
+
 function calculate() {
   const dateInput = document.getElementById('dateInput');
   // Remove spaces from the input
@@ -48,4 +79,14 @@ function calculate() {
 
   document.getElementById('exclusiveOutput').textContent = "Days difference exclusive: " + diffDays;
   document.getElementById('inclusiveOutput').textContent= "Days difference inclusive: " + (diffDays + 1)
+
+  if (document.getElementById('clipboardToggle').checked) {
+  navigator.clipboard.writeText(diffDays + 1)
+    .then(() => {
+      console.log('Result copied to clipboard successfully!');
+    })
+    .catch(err => {
+      console.error('Failed to copy the result to clipboard: ', err);
+    });
+  }
 };
